@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import {Button, SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import {getBrightness, setBrightness} from './Brightness';
-import DeviceBrightness from '@adrianso/react-native-device-brightness';
 
 export default function TempUI() {
   const [value, setValue] = useState(-1);
