@@ -29,6 +29,7 @@ class SensorModule (reactContext: ReactApplicationContext, sensorName: String): 
     private var proximitySensor: Sensor? = null
     private var relativeHumiditySensor: Sensor? = null
     private var rotationSensor: Sensor? = null
+    private var barometerSensor: Sensor? = null
 
 //    private var accList = mutableListOf<AccData>()
 //    private var gyroList = mutableListOf<GyroData>()
@@ -118,10 +119,10 @@ class SensorModule (reactContext: ReactApplicationContext, sensorName: String): 
         val xSin = event.values[0]
         val ySin = event.values[1]
         val zSin = event.values[2]
-        val cos = event.values[3]
-        val estimatedHeadingAccuracy = event.values[4]
+        val scalar = event.values[3]
 
-        val data = RotationVectorData(0, xSin, ySin, zSin, cos, estimatedHeadingAccuracy)
+
+        val data = RotationVectorData(0, xSin, ySin, zSin, scalar)
         sendEvent(Gson().toJson(data))
     }
 
@@ -140,24 +141,4 @@ class SensorModule (reactContext: ReactApplicationContext, sensorName: String): 
         val data = ThreeAxisData(0, axisX, axisY, axisZ, System.currentTimeMillis())
         sendEvent(Gson().toJson(data))
     }
-
-    private fun getGyroscopeData(event: SensorEvent){
-        val axisX: Float = event.values[0]
-        val axisY: Float = event.values[1]
-        val axisZ: Float = event.values[2]
-
-        val gyroData = GyroData(0, axisX, axisY, axisZ, System.currentTimeMillis())
-        sendEvent(Gson().toJson(gyroData))
-    }
-
-    private fun getAccelerometerData(event: SensorEvent) {
-        val axisX: Float = event.values[0]
-        val axisY: Float = event.values[1]
-        val axisZ: Float = event.values[2]
-
-        val accData = AccData(0, axisX, axisY, axisZ, System.currentTimeMillis())
-        sendEvent(Gson().toJson(accData))
-    }
-
-
 }

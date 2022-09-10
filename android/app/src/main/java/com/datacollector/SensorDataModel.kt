@@ -32,10 +32,9 @@ data class OneValueData(
 
 data class RotationVectorData(
     var idx: Int = 0,
-    var xSin: Float = 0.00f,
-    var ySin: Float = 0.00f,
-    var zSin: Float = 0.00f,
-    var cos: Float = 0.00f,
-    var estimatedHeadingAccuracy: Float = 0.00f
+    var x: Float = 0.00f,
+    var y: Float = 0.00f,
+    var z: Float = 0.00f,
+    var scalar: Float = 0.00f,
 )
 
