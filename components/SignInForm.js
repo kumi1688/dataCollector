@@ -1,4 +1,3 @@
-import {StyleSheet, Text, TextInput, View} from 'react-native';
 import React, {useRef} from 'react';
 import BorderedInput from './BorderedInput';
 
@@ -34,6 +33,7 @@ export default function SignInForm({
         autoCorrect={false}
         autoCompleteType="email"
         keyboardType="email-address"
+        ref={passwordRef}
         returnKeyType={isSignUp ? 'next' : 'done'}
         onSubmitEditing={() => {
           if (isSignUp) {

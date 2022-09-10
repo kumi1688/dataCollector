@@ -1,4 +1,5 @@
 import {
+  Alert,
   Keyboard,
   KeyboardAvoidingView,
   SafeAreaView,
@@ -9,6 +10,7 @@ import {
 import React, {useState} from 'react';
 import SignInForm from '../components/SignInForm';
 import SignInButton from '../components/SignInButton';
+import {signIn, signUp} from '../lib/auth';
 
 export default function SignInScreen({navigation, route}) {
   const {isSignUp} = route.params ?? {};
@@ -18,17 +20,45 @@ export default function SignInScreen({navigation, route}) {
     password: '',
     confirmPassword: '',
   });
+  const [loading, setLoading] = useState(false);
+
   const createChangeTextHandler = name => value => {
     setForm({...form, [name]: value});
   };
-  const onSubmit = () => {
+
+  const onSubmit = async () => {
     Keyboard.dismiss();
+    const {email, password, confirmPassword} = form;
+
+    if (isSignUp && password != confirmPassword) {
+      Alert.alert('비밀번호가 일치하지 않습니다');
+      return;
+    }
+
+    setLoading(true);
+    const info = {email, password};
+    try {
+      const {user} = isSignUp ? await signUp(info) : await signIn(info);
+      console.log(user);
+    } catch (e) {
+      const messages = {
+        'auth/email-already-in-use': '이미 가입된 이메일입니다.',
+        'auth/wrong-password': '잘못된 비밀번호입니다.',
+        'auth/user-not-found': '존재하지 않는 계정입니다.',
+        'auth/invalid-email': '유효하지 않은 이메일 주소입니다.',
+      };
+      const msg = messages[e.code] || `${isSignUp ? '가입' : '로그인'} 실패`;
+      Alert.alert('실패', msg);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <KeyboardAvoidingView style={styles.keyboardAvoidingView}>
       <SafeAreaView style={styles.fullscreen}>
-        <Text style={styles.text}>Data Collector for CapstoneDesign2</Text>
+        <Text style={styles.text}>Data Collector</Text>
+        <Text style={styles.text}>CapstoneDesign2</Text>
         <View style={styles.form}>
           <SignInForm
             form={form}
@@ -36,7 +66,11 @@ export default function SignInScreen({navigation, route}) {
             onSubmit={onSubmit}
             createChangeTextHandler={createChangeTextHandler}
           />
-          <SignInButton isSignUp={isSignUp} onSubmit={onSubmit} />
+          <SignInButton
+            isSignUp={isSignUp}
+            onSubmit={onSubmit}
+            loading={loading}
+          />
         </View>
       </SafeAreaView>
     </KeyboardAvoidingView>
