@@ -8,12 +8,7 @@ import TempUI from './TempUI';
 const store = configureStore({reducer: rootReducer});
 
 export default function App() {
-  return (
-    <Provider store={store}>
-      {/* <View /> */}
-      <TempUI />
-    </Provider>
-  );
+  return <TempUI />;
 }
 
 const styles = StyleSheet.create({});

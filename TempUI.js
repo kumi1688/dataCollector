@@ -1,36 +1,73 @@
 import React, {useState} from 'react';
-import {Button, SafeAreaView, StyleSheet, Text, View} from 'react-native';
-import {getBrightness, setBrightness} from './Brightness';
+import {
+  Button,
+  FlatList,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
+import {
+  getSensorList,
+  isAvailable,
+  getData,
+  startUpdates,
+  stopUpdates,
+} from './sensor';
 
 export default function TempUI() {
-  const [value, setValue] = useState(-1);
-  const onPress = async () => {
-    const brightness = await getBrightness();
-    setValue(brightness);
+  const [sensorAvailable, setSensorAvailable] = useState(
+    Array.from({length: 11}, (v, i) => false),
+  );
+
+  const checkAvailable = async () => {
+    const promises = getSensorList().map(sensorName => isAvailable(sensorName));
+    const results = await Promise.all(promises);
+    setSensorAvailable(results);
   };
 
-  const onPressLow = () => {
-    setBrightness(0.25);
-    // DeviceBrightness.setBrightnessLevel(0.25);
+  const onPress2 = async () => {
+    startUpdates('accelerometer');
+    startUpdates('rotationVector');
   };
-  const onPressHigh = () => {
-    setBrightness(1);
-    // DeviceBrightness.setBrightnessLevel(1);
+
+  const onPress3 = async () => {
+    stopUpdates('accelerometer');
+    stopUpdates('rotationVector');
+  };
+
+  const onPress4 = async () => {
+    // getData('accelerometer');
+    getData('rotationVector');
   };
 
   return (
     <SafeAreaView style={styles.block}>
-      <Button title="Update Brightness" onPress={onPress} />
-      <View style={styles.textWrapper}>
-        <Text style={styles.text}>{value}</Text>
-      </View>
-      <Button title="Low Brightness" onPress={onPressLow} />
-      <Button title="High Brightness" onPress={onPressHigh} />
+      <Button
+        title="check acc"
+        onPress={() => {
+          checkAvailable('accelerometer');
+        }}
+      />
+      <Button title="start update acc" onPress={onPress2} />
+      <Button title="stop update acc" onPress={onPress3} />
+      <Button title="acc stream" onPress={onPress4} />
+      <FlatList
+        data={sensorAvailable}
+        ItemSeparatorComponent={() => <View />}
+        renderItem={({item}) => {
+          return <Text>{item === false ? 'false' : 'true'}</Text>;
+        }}
+      />
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+  marginTop: {
+    marginTop: 50,
+    paddingTop: 20,
+  },
   block: {
     flex: 1,
   },

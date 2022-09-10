@@ -1,4 +1,41 @@
 package com.datacollector
 
-class SensorDataModel {
-}
+data class AccData(
+    var idx: Int = 0,
+    var x: Float = 0.0f,
+    var y: Float = 0.0f,
+    var z: Float = 0.0f,
+    var timestamp: Long = 0
+)
+
+data class GyroData(
+    var idx: Int =0,
+    var x: Float = 0.0f,
+    var y: Float = 0.0f,
+    var z: Float = 0.0f,
+    var timestamp: Long = 0
+)
+
+data class ThreeAxisData(
+    var idx: Int =0,
+    var x: Float = 0.00f,
+    var y: Float = 0.00f,
+    var z: Float = 0.00f,
+    var timestamp: Long = 0
+)
+
+data class OneValueData(
+    var idx: Int =0,
+    var value: Float = 0.00f,
+    var timestamp: Long = 0
+)
+
+data class RotationVectorData(
+    var idx: Int = 0,
+    var xSin: Float = 0.00f,
+    var ySin: Float = 0.00f,
+    var zSin: Float = 0.00f,
+    var cos: Float = 0.00f,
+    var estimatedHeadingAccuracy: Float = 0.00f
+)
+
