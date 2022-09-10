@@ -6,14 +6,17 @@ import rootReducer from './slices';
 import TempUI from './TempUI';
 import {NavigationContainer} from '@react-navigation/native';
 import RootStack from './screens/RootStack';
+import {UserContextProvider} from './contexts/UserContext';
 
 // const store = configureStore({reducer: rootReducer});
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <RootStack />
-    </NavigationContainer>
+    <UserContextProvider>
+      <NavigationContainer>
+        <RootStack />
+      </NavigationContainer>
+    </UserContextProvider>
   );
 }
 

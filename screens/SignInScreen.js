@@ -10,7 +10,7 @@ import {
 import React, {useState} from 'react';
 import SignInForm from '../components/SignInForm';
 import SignInButton from '../components/SignInButton';
-import {signIn, signUp} from '../lib/auth';
+import {signIn, signUp} from '../lib/firebase/auth';
 
 export default function SignInScreen({navigation, route}) {
   const {isSignUp} = route.params ?? {};
@@ -30,7 +30,7 @@ export default function SignInScreen({navigation, route}) {
     Keyboard.dismiss();
     const {email, password, confirmPassword} = form;
 
-    if (isSignUp && password != confirmPassword) {
+    if (isSignUp && password !== confirmPassword) {
       Alert.alert('비밀번호가 일치하지 않습니다');
       return;
     }
@@ -39,7 +39,7 @@ export default function SignInScreen({navigation, route}) {
     const info = {email, password};
     try {
       const {user} = isSignUp ? await signUp(info) : await signIn(info);
-      console.log(user);
+      navigation.navigate('SensorHome');
     } catch (e) {
       const messages = {
         'auth/email-already-in-use': '이미 가입된 이메일입니다.',
