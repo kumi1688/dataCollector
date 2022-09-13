@@ -2,9 +2,9 @@ import {StyleSheet, Text, View} from 'react-native';
 import React, {useEffect} from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import SignInScreen from './SignInScreen';
-import SensorScreen from './SensorScreen';
 import {subscribeAuth} from '../lib/firebase/auth';
 import {useUserContext} from '../contexts/UserContext';
+import MainTab from './MainTab';
 
 const Stack = createNativeStackNavigator();
 
@@ -27,8 +27,8 @@ export default function RootStack() {
     <Stack.Navigator>
       {user ? (
         <Stack.Screen
-          name="SensorHome"
-          component={SensorScreen}
+          name="MainTab"
+          component={MainTab}
           options={{headerShown: false}}
         />
       ) : (
@@ -38,10 +38,9 @@ export default function RootStack() {
             component={SignInScreen}
             options={{headerShown: false}}
           />
-
           <Stack.Screen
-            name="SensorHome"
-            component={SensorScreen}
+            name="MainTab"
+            component={MainTab}
             options={{headerShown: false}}
           />
         </>

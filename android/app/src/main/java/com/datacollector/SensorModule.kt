@@ -89,6 +89,17 @@ class SensorModule (reactContext: ReactApplicationContext, sensorName: String): 
         promise.resolve(true);
     }
 
+    @ReactMethod
+    fun addListener(eventName: String){
+
+    }
+
+    @ReactMethod
+    fun removeListeners(count: Int){
+
+    }
+
+
     override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
     }
 
@@ -122,14 +133,14 @@ class SensorModule (reactContext: ReactApplicationContext, sensorName: String): 
         val scalar = event.values[3]
 
 
-        val data = RotationVectorData(0, xSin, ySin, zSin, scalar)
+        val data = RotationVectorData(xSin, ySin, zSin, scalar)
         sendEvent(Gson().toJson(data))
     }
 
 
     private fun getOneValueSensorData(event: SensorEvent){
         val value: Float = event.values[0]
-        val data = OneValueData(0, value, System.currentTimeMillis())
+        val data = OneValueData(value, System.currentTimeMillis())
         sendEvent(Gson().toJson(data))
     }
 
@@ -138,7 +149,7 @@ class SensorModule (reactContext: ReactApplicationContext, sensorName: String): 
         val axisY: Float = event.values[1]
         val axisZ: Float = event.values[2]
 
-        val data = ThreeAxisData(0, axisX, axisY, axisZ, System.currentTimeMillis())
+        val data = ThreeAxisData(axisX, axisY, axisZ, System.currentTimeMillis())
         sendEvent(Gson().toJson(data))
     }
 }
